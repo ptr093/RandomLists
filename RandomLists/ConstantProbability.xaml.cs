@@ -263,7 +263,7 @@ namespace RandomLists
                 var SelectedNumber = random.Next(1, 100);
                 
                 int el = randomNumbers.IndexOf(SelectedNumber);
-                MessageBox.Show("el:"+el);
+              
                 int suma = 0;
                 for (int i = 0; i < texts.Count; i++)
                 {
@@ -280,7 +280,7 @@ namespace RandomLists
                         break;
                     }
                 }
-                MessageBox.Show(texty[el].Text);
+                MessageBox.Show("Zwyciesca jest :"+ texty[el].Text);
             }
             else 
             {

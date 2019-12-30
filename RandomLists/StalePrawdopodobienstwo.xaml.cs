@@ -140,7 +140,7 @@ namespace RandomLists
                 Random random = new Random();
 
                 var SelectedNumber = random.Next(0, texty.Count);
-                MessageBox.Show(texty[SelectedNumber].Text);
+                MessageBox.Show("Zwyciesca jest: "+ texty[SelectedNumber].Text);
             }
             else
             {
