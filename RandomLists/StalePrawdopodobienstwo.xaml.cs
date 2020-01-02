@@ -12,18 +12,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+
 
 namespace RandomLists
 {
     /// <summary>
     /// Interaction logic for StalePrawdopodobienstwo.xaml
     /// </summary>
-    public partial class StalePrawdopodobienstwo : Window
+    public partial class StalePrawdopodobienstwo : MetroWindow
     {
-        public StalePrawdopodobienstwo()
-        {
-            InitializeComponent();
-        }
+
+        private readonly IDialogService dialogService;
 
         static int suma = 100;
         static int number = 0;
@@ -37,6 +38,12 @@ namespace RandomLists
 
        
         static List<TextBox> texts = new List<TextBox>();
+
+        public StalePrawdopodobienstwo()
+        {
+            InitializeComponent();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -79,7 +86,7 @@ namespace RandomLists
             TextBox text = new TextBox();
             text.Margin = new Thickness(15);
             text.Opacity = 0.4;
-
+            text.SetValue(TextBoxHelper.WatermarkProperty, "Wprowadz Imie");
             text.Width = 100;
             text.Height = 20;
             return text;
@@ -114,9 +121,6 @@ namespace RandomLists
 
   
 
-   
-
-
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -140,11 +144,14 @@ namespace RandomLists
                 Random random = new Random();
 
                 var SelectedNumber = random.Next(0, texty.Count);
-                MessageBox.Show("Zwyciesca jest: "+ texty[SelectedNumber].Text);
+                this.ShowMessageAsync("Wygrany", "Zwyciesca Jest : " + texty[SelectedNumber].Text);
+             
+
             }
             else
             {
-                MessageBox.Show("Zadne pole nie moze pozostac puste, lub liczba osob jest mniejsza niz 2");
+                this.ShowMessageAsync("Blad", "Zadne pole nie moze pozostac puste, lub liczba osob jest mniejsza niz 2");
+              
             }
         }
 
@@ -162,15 +169,25 @@ namespace RandomLists
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             StalePrawdopodobienstwo stale = new StalePrawdopodobienstwo();
+            Czyszczenie();
             stale.Show();
             this.Close();
+            
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             ConstantProbability constant = new ConstantProbability();
+            Czyszczenie();
+
             constant.Show();
             this.Close();
+        }
+
+        private static void Czyszczenie()
+        {
+            texty.Clear();
+            TextBoxs.Clear();
         }
     }
 }

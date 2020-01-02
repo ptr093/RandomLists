@@ -12,7 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace RandomLists
 {
@@ -22,8 +23,12 @@ namespace RandomLists
     /// 
 
        
-    public partial class ConstantProbability : Window
+    public partial class ConstantProbability : MetroWindow
     {
+
+        private readonly IDialogService dialogService;
+   
+
         static int suma = 100;
         static int number = 0;
 
@@ -38,12 +43,9 @@ namespace RandomLists
         {
            InitializeComponent();
 
-        
-
-
-
 
         }
+      
         static List<TextBox> texts = new List<TextBox>();
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -106,8 +108,7 @@ namespace RandomLists
         private static Slider CreateSlider()
         {
             Slider slider = new Slider();
-            slider.Background = Brushes.Transparent;
-            slider.Foreground = Brushes.LightCoral;
+      
             slider.Name = "b" + number;
             slider.Margin = new Thickness { Right = 10 };
             slider.TickFrequency = 1;
@@ -116,7 +117,9 @@ namespace RandomLists
             slider.Minimum = 1;
             slider.Maximum = 99;
             slider.IsSnapToTickEnabled = true;
-          
+            
+
+
             return slider;
         }
 
@@ -125,9 +128,6 @@ namespace RandomLists
             TextBox text1 = new TextBox();
             text1.Margin = new Thickness(15);
             text1.Name = "b" + number;
-
-
-
             text1.Width = 40;
             text1.Height = 20;
             text1.Opacity = 0.4;
@@ -139,9 +139,8 @@ namespace RandomLists
             TextBox text = new TextBox();
             text.Margin = new Thickness(15);
             text.Opacity = 0.4;
-
-
-
+            text.SetValue(TextBoxHelper.WatermarkProperty, "Wprowadz Imie");
+     
 
             text.Width = 100;
             text.Height = 20;
@@ -172,7 +171,6 @@ namespace RandomLists
             texts.RemoveAt(index);
             texty.RemoveAt(index);
      
-            //tracks.RemoveAt(index);
             
             xyz.Children.RemoveAt(liczba);
            
@@ -191,8 +189,10 @@ namespace RandomLists
                 TracksName.RemoveAt(texts.Count - 1);
                 texty.RemoveAt(texty.Count-1);
                 Wyrownaj();
-
-                MessageBox.Show("Nie mozesz Dodac Kolejnego Goscia poniewaz suma prawdopodobieństw Równa jest 100%");
+                
+   
+               
+            
                 return false;
             }
      
@@ -235,6 +235,8 @@ namespace RandomLists
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+
+         
             var boolik = true;
             var msg = true;
 
@@ -249,7 +251,9 @@ namespace RandomLists
             if(boolik == false)
             {
                 msg = false;
-                MessageBox.Show("Zadne pole nie moze zostac puste");
+                this.ShowMessageAsync("Błąd", "Zadne pole nie moze zostac puste");
+        
+               
             }
             int wartosc = NewMethod();
             if (boolik && TextBoxs.Count > 1 && wartosc  <=100)
@@ -261,9 +265,9 @@ namespace RandomLists
                 List<int> randomNumbers = CreateRandomNUmbers(random);
 
                 var SelectedNumber = random.Next(1, 100);
-                
+
                 int el = randomNumbers.IndexOf(SelectedNumber);
-              
+
                 int suma = 0;
                 for (int i = 0; i < texts.Count; i++)
                 {
@@ -280,16 +284,21 @@ namespace RandomLists
                         break;
                     }
                 }
-                MessageBox.Show("Zwyciesca jest :"+ texty[el].Text);
+             
+
+                this.ShowMessageAsync("Wygrany", "Zwyciesca Jest : "+ texty[el].Text);
+            
             }
             else 
             {
-                if(msg)
-                MessageBox.Show("Nie dodano żadnych osob, musza być przynajmniej dwie, " +
+                if (msg)
+                    this.ShowMessageAsync("Błąd","Nie dodano żadnych osob, musza być przynajmniej dwie, " +
                     "lub prawdopodobieństwo przekracza 100%");
+       
             }
             }
 
+ 
         private static List<int> CreateRandomNUmbers(Random random)
         {
             var randomNumbers = Enumerable.Range(1, 100).OrderBy(x => random.Next()).Take(100).ToList();
@@ -301,28 +310,33 @@ namespace RandomLists
             return randomNumbers;
         }
 
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
-        {
-           
-           
-        }
-
-        private void X_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-        }
+ 
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             StalePrawdopodobienstwo stale = new StalePrawdopodobienstwo();
+            Czyszczenie();
             stale.Show();
             this.Close();
+          
+        }
+
+        private static void Czyszczenie()
+        {
+            TextBoxs.Clear();
+            TracksName.Clear();
+            texts.Clear();
+            texty.Clear();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             ConstantProbability constant = new ConstantProbability();
+            Czyszczenie();
             constant.Show();
             this.Close();
+
+            
         }
     }
 }
